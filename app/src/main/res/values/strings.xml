@@ -7,4 +7,8 @@
     <string name="loginsuccess">登入成功</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="productname">品名</string>
+    <string name="price">價格</string>
+    <string name="worktime">製作時間</string>
+    <string name="create">新建</string>
 </resources>
