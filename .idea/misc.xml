@@ -1,5 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_customer.xml" value="0.23125" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_main.xml" value="0.2" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_store.xml" value="0.23125" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_create_product.xml" value="0.23697916666666666" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/item_spinner_usertype.xml" value="0.23125" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
