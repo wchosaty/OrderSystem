@@ -11,4 +11,7 @@
     <string name="price">價格</string>
     <string name="worktime">製作時間</string>
     <string name="create">新建</string>
+    <string name="order">訂單</string>
+    <string name="product">商品列表</string>
+    <string name="query">歷史查詢</string>
 </resources>
