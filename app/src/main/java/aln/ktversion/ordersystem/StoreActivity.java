@@ -17,11 +17,19 @@ public class StoreActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
 
-        bottomNavigationView = findViewById(R.id.bottomNavigation_store);
+        initialNavigation();
+
+
+    }
+
+    private void initialNavigation() {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.fragmentContainerView_store);
+
         NavController navController = navHostFragment.getNavController();
+        // bottomNavigation
+        bottomNavigationView = findViewById(R.id.bottomNavigation_store);
         NavigationUI.setupWithNavController(bottomNavigationView,navController);
     }
 }

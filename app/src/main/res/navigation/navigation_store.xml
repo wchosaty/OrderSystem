@@ -14,10 +14,19 @@
         android:id="@+id/productListFragment"
         android:name="aln.ktversion.ordersystem.store.ProductListFragment"
         android:label="fragment_product_list"
-        tools:layout="@layout/fragment_product_list" />
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_productListFragment_to_createProductFragment"
+            app:destination="@id/createProductFragment" />
+    </fragment>
     <fragment
         android:id="@+id/orderListFragment"
         android:name="aln.ktversion.ordersystem.store.OrderListFragment"
         android:label="fragment_order_list"
         tools:layout="@layout/fragment_order_list" />
+    <fragment
+        android:id="@+id/createProductFragment"
+        android:name="aln.ktversion.ordersystem.store.CreateProductFragment"
+        android:label="fragment_create_product"
+        tools:layout="@layout/fragment_create_product" />
 </navigation>

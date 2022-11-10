@@ -14,4 +14,5 @@
     <string name="order">訂單</string>
     <string name="product">商品列表</string>
     <string name="query">歷史查詢</string>
+    <string name="inputIsEmpty">未輸入或輸入空白</string>
 </resources>

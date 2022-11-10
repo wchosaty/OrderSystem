@@ -13,22 +13,27 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import aln.ktversion.ordersystem.MainActivity;
 import aln.ktversion.ordersystem.R;
 import aln.ktversion.ordersystem.itemclass.Product;
+import aln.ktversion.ordersystem.network.RemoteAccess;
+import aln.ktversion.ordersystem.tool.Common;
 
 public class CreateProductFragment extends Fragment {
     private static final String TAG = "TAG CreateProductFragment";
     private Button btCreate;
-    private TextView etProductName,etPrice,etWorkTime;
+    private EditText etProductName,etPrice,etWorkTime;
+    private TextView tvMessage;
     private Spinner spinner;
     private ArrayAdapter<String> adapter;
     private List<String> groupTypeList;
@@ -56,8 +61,37 @@ public class CreateProductFragment extends Fragment {
 
     private void handleData() {
         btCreate.setOnClickListener(v -> {
-            
+            String name = etProductName.getText().toString().trim();
+            String priceString = etPrice.getText().toString().trim();
+            String waitTimeString = etWorkTime.getText().toString().trim();
+            if (checkInput(name) && checkInput(priceString)
+                    && checkInput(waitTimeString) && checkInput(selectGroup)) {
+                double price = Double.valueOf(priceString);
+                Integer waitTime = Integer.valueOf(waitTimeString);
+                Product product = new Product(false,name,price,waitTime,0,0,null,selectGroup);
+
+                String outString = new Gson().toJson(product);
+                String url = RemoteAccess.URL+"MyProductServlet";
+
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("action", Common.CREATE_PRODUCT);
+                jsonObject.addProperty("data",outString);
+
+                String backString = RemoteAccess.sendProduct(url,outString);
+                tvMessage.setText("response :"+backString);
+
+            } else {
+                tvMessage.setText(R.string.inputIsEmpty);
+            }
         });
+    }
+
+    private Boolean checkInput(String string) {
+        if(!Objects.equals(string,null) && (!Objects.equals(string,""))){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void Initial() {
@@ -86,8 +120,7 @@ public class CreateProductFragment extends Fragment {
         etProductName = view.findViewById(R.id.etProductName);
         etPrice = view.findViewById(R.id.etPrice);
         etWorkTime = view.findViewById(R.id.etWorkTime);
-
         spinner = view.findViewById(R.id.spinnerGroup);
-
+        tvMessage = view.findViewById(R.id.tvMessage_create);
     }
 }
