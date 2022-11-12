@@ -4,6 +4,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
@@ -31,9 +32,10 @@ public class ConnectString implements Callable<String> {
             httpConnection.setChunkedStreamingMode(0);
             httpConnection.setUseCaches(false);
             httpConnection.setRequestMethod("POST");
-            try (BufferedWriter bw = new BufferedWriter
-                    (new OutputStreamWriter(httpConnection.getOutputStream()));) {
-                Log.d(TAG, "outGsonString :" + outString);
+            httpConnection.setRequestProperty("charset","UTF-8");
+            try (BufferedWriter bw =
+                         new BufferedWriter(new OutputStreamWriter(httpConnection.getOutputStream()));) {
+                LogHistory.d(TAG, "outGsonString :" + outString);
                 bw.write(outString);
             }
             int responseCode = httpConnection.getResponseCode();
@@ -48,7 +50,7 @@ public class ConnectString implements Callable<String> {
             } else {
                 LogHistory.d(TAG, "responseCode :" + responseCode);
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         } finally {
             if (httpConnection != null) {

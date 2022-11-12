@@ -1,15 +1,14 @@
 package aln.ktversion.ordersystem.itemclass;
 
 public class Product {
-    public static final String GROUP_RICE = "飯",GROUP_NOODLE ="麵",GROUP_SOUP = "湯";
-    public static final Integer RICE = 1,NOODLE =2,SOUP = 3;
+
     private Boolean titleFlag;
     private String name;
     private double price;
     private Integer waitTime,count,topThree,id;
-    private String group;
+    private String kind;
 
-    public Product(Boolean titleFlag, String name, double price, Integer waitTime, Integer count, Integer topThree, Integer id, String group) {
+    public Product(Boolean titleFlag, String name, double price, Integer waitTime, Integer count, Integer topThree, Integer id, String kind) {
         this.titleFlag = titleFlag;
         this.name = name;
         this.price = price;
@@ -17,7 +16,7 @@ public class Product {
         this.count = count;
         this.topThree = topThree;
         this.id = id;
-        this.group = group;
+        this.kind = kind;
     }
 
     public Boolean getTitleFlag() {
@@ -76,11 +75,11 @@ public class Product {
         this.id = id;
     }
 
-    public String getGroup() {
-        return group;
+    public String getKind() {
+        return kind;
     }
 
-    public void setGroup(String group) {
-        this.group = group;
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 }

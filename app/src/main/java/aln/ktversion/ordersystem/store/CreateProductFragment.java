@@ -28,6 +28,7 @@ import aln.ktversion.ordersystem.R;
 import aln.ktversion.ordersystem.itemclass.Product;
 import aln.ktversion.ordersystem.network.RemoteAccess;
 import aln.ktversion.ordersystem.tool.Common;
+import aln.ktversion.ordersystem.tool.LogHistory;
 
 public class CreateProductFragment extends Fragment {
     private static final String TAG = "TAG CreateProductFragment";
@@ -70,15 +71,16 @@ public class CreateProductFragment extends Fragment {
                 Integer waitTime = Integer.valueOf(waitTimeString);
                 Product product = new Product(false,name,price,waitTime,0,0,null,selectGroup);
 
-                String outString = new Gson().toJson(product);
-                String url = RemoteAccess.URL+"MyProductServlet";
+                String gsonString = new Gson().toJson(product);
+//                String url = RemoteAccess.URL+"MyProductServlet";
+                String url = RemoteAccess.URL+"MyProductServlet_Maintenance";
 
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("action", Common.CREATE_PRODUCT);
-                jsonObject.addProperty("data",outString);
+                jsonObject.addProperty("action", Common.INSERT_PRODUCT);
+                jsonObject.addProperty("data",gsonString);
 
-                String backString = RemoteAccess.sendProduct(url,outString);
-                tvMessage.setText("response :"+backString);
+                String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
+                LogHistory.d(TAG,"back :"+backString);
 
             } else {
                 tvMessage.setText(R.string.inputIsEmpty);
@@ -96,9 +98,9 @@ public class CreateProductFragment extends Fragment {
 
     private void Initial() {
         groupTypeList = new ArrayList<>();
-        groupTypeList.add(Product.GROUP_RICE);
-        groupTypeList.add(Product.GROUP_NOODLE);
-        groupTypeList.add(Product.GROUP_SOUP);
+        groupTypeList.add(Common.GROUP_RICE);
+        groupTypeList.add(Common.GROUP_NOODLE);
+        groupTypeList.add(Common.GROUP_SOUP);
         selectGroup = null;
         adapter = new ArrayAdapter<>(getActivity(),R.layout.item_spinner_usertype,groupTypeList);
         spinner.setAdapter(adapter);

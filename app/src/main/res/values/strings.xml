@@ -15,4 +15,8 @@
     <string name="product">商品列表</string>
     <string name="query">歷史查詢</string>
     <string name="inputIsEmpty">未輸入或輸入空白</string>
+    <string name="title_productlist">商品清單</string>
+    <string name="productisEmpty">沒有商品</string>
+    <string name="priceSymbol">$</string>
+    <string name="minute"> 分鐘</string>
 </resources>
