@@ -55,7 +55,7 @@ public class ProductListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initial();
-        showProductList();
+
         handleAddProduct();
         swipeRefreshLayout.setOnRefreshListener(() -> {
                     swipeRefreshLayout.setRefreshing(true);
@@ -82,6 +82,7 @@ public class ProductListFragment extends Fragment {
     private void initial() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         productList = getProductList();
+        showProductList();
     }
 
     private List<Product> getProductList() {
@@ -133,10 +134,22 @@ public class ProductListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
             final Product product = list.get(position);
-//            holder.tvTitle.setVisibility(View.GONE);
-            holder.tvName.setText(product.getName());
-            holder.tvPrice.setText(getString(R.string.priceSymbol)+String.valueOf(product.getPrice()));
-            holder.tvWaitTime.setText(String.valueOf(product.getWaitTime())+ getString(R.string.minute) );
+            if(product.getTitleFlag()){
+                holder.tvKind.setVisibility(View.VISIBLE);
+                holder.tvKind.setText(product.getKind());
+                holder.tvName.setVisibility(View.GONE);
+                holder.tvPrice.setVisibility(View.GONE);
+                holder.tvWaitTime.setVisibility(View.GONE);
+            }else{
+                holder.tvKind.setVisibility(View.GONE);
+                holder.tvName.setVisibility(View.VISIBLE);
+                holder.tvPrice.setVisibility(View.VISIBLE);
+                holder.tvWaitTime.setVisibility(View.VISIBLE);
+                holder.tvName.setText(product.getName());
+                holder.tvPrice.setText(getString(R.string.priceSymbol)+String.valueOf(product.getPrice()));
+                holder.tvWaitTime.setText("約"+String.valueOf(product.getWaitTime())+ getString(R.string.minute) );
+            }
+
         }
 
         public void setList(List<Product> list) {
@@ -144,11 +157,11 @@ public class ProductListFragment extends Fragment {
         }
 
         class ProductViewHolder extends RecyclerView.ViewHolder{
-            private TextView tvTitle,tvName,tvPrice,tvWaitTime;
+            private TextView tvKind,tvName,tvPrice,tvWaitTime;
 
             public ProductViewHolder(@NonNull View itemView) {
                 super(itemView);
-                tvTitle = itemView.findViewById(R.id.tvTitle_ProductList);
+                tvKind = itemView.findViewById(R.id.tvKind_ProductList);
                 tvName = itemView.findViewById(R.id.tvName_productList);
                 tvPrice =itemView.findViewById(R.id.tvPrice_ProductList);
                 tvWaitTime = itemView.findViewById(R.id.tvWaitTime_ProductList);
