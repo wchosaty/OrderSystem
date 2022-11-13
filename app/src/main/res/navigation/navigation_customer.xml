@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation_customer"
     app:startDestination="@id/chooseProductListFragment">
-
     <fragment
         android:id="@+id/chooseProductListFragment"
         android:name="aln.ktversion.ordersystem.customer.ChooseProductListFragment"
