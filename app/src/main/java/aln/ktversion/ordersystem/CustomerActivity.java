@@ -15,9 +15,9 @@ public class CustomerActivity extends AppCompatActivity {
     }
 
     private void initial() {
-        NavHostFragment navHostFragment =
-                (NavHostFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.fragmentContainerView_store);
+//        NavHostFragment navHostFragment =
+//                (NavHostFragment) getSupportFragmentManager()
+//                        .findFragmentById(R.id.fragmentContainerView_store);
 
     }
 }

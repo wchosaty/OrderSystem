@@ -23,9 +23,11 @@ import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import aln.ktversion.ordersystem.R;
+import aln.ktversion.ordersystem.itemclass.Order;
 import aln.ktversion.ordersystem.itemclass.Product;
 import aln.ktversion.ordersystem.network.RemoteAccess;
 import aln.ktversion.ordersystem.store.ProductListFragment;
@@ -39,6 +41,7 @@ public class ChooseProductListFragment extends Fragment {
     private ImageButton ibMarket;
     private TextView tvTotalPrice;
     private List<Product> productList;
+    private Order order;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,23 +59,33 @@ public class ChooseProductListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initial();
+
         swipeRefreshLayout.setOnRefreshListener(() -> {
                     swipeRefreshLayout.setRefreshing(true);
                     showProductList();
                     swipeRefreshLayout.setRefreshing(false);
                 }
         );
-
-        ibMarket.setOnClickListener(v -> {
-            Navigation.findNavController(v)
-                    .navigate(R.id.action_chooseProductListFragment_to_singleMarketProductFragment);
-        });
     }
 
     private void initial() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         productList = getProductList();
         showProductList();
+        addChooseProducts();
+    }
+
+    private void addChooseProducts() {
+        Bundle bundle = getArguments();
+        if(bundle == null){
+            return;
+        }
+        String backString = bundle.getString(Common.ALL_PRODUCT);
+        Type type = new TypeToken<List<Product>>() {}.getType();
+        List<Product> list = new Gson().fromJson(backString,type);
+        if(list != null){
+//            tvTotalPrice.setText("size :"+list.size()+" name :"+list.get(0).getName()+" price :"+ list.get(0).getPrice());
+        }
     }
 
     private void showProductList() {
@@ -148,17 +161,13 @@ public class ChooseProductListFragment extends Fragment {
                 holder.tvPrice.setText(getString(R.string.priceSymbol)+String.valueOf(product.getPrice()));
                 holder.tvWaitTime.setText("約"+String.valueOf(product.getWaitTime())+ getString(R.string.minute) );
             }
+
             // ToChooseProduct
-            holder.itemView.setOnLongClickListener(v -> {
-//                Bundle bundle = new Bundle();
-//                bundle.putSerializable(Common.INSERT_PRODUCT,product);
-//                Navigation.findNavController(v)
-//                .navigate(R.id.action_chooseProductListFragment_to_singleMarketProductFragment,bundle);
-
+            holder.itemView.setOnClickListener(v -> {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(Common.INSERT_PRODUCT,product);
                 Navigation.findNavController(v)
-                        .navigate(R.id.action_chooseProductListFragment_to_singleMarketProductFragment);
-
-                return true;
+                .navigate(R.id.action_chooseProductListFragment_to_singleMarketProductFragment,bundle);
             });
         }
 

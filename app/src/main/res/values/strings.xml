@@ -21,4 +21,6 @@
     <string name="minute"> 分鐘</string>
     <string name="title_chooseproduct">點餐</string>
     <string name="priceInitial">$0</string>
+    <string name="countInitial">1</string>
+    <string name="sure">確認</string>
 </resources>
