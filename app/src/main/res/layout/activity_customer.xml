@@ -6,13 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".CustomerActivity">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="customer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView_customer"
+        android:name="aln.ktversion.ordersystem.customer.ChooseProductListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/navigation_customer"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

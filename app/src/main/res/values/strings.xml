@@ -19,4 +19,6 @@
     <string name="productisEmpty">沒有商品</string>
     <string name="priceSymbol">$</string>
     <string name="minute"> 分鐘</string>
+    <string name="title_chooseproduct">點餐</string>
+    <string name="priceInitial">$0</string>
 </resources>

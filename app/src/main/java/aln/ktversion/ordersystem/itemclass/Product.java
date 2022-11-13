@@ -1,6 +1,8 @@
 package aln.ktversion.ordersystem.itemclass;
 
-public class Product {
+import java.io.Serializable;
+
+public class Product implements Serializable {
 
     private Boolean titleFlag;
     private String name;

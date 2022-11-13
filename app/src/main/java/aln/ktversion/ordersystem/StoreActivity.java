@@ -18,12 +18,12 @@ public class StoreActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_store);
-        initialNavigation();
+        initial();
 
 
     }
 
-    private void initialNavigation() {
+    private void initial() {
         NavHostFragment navHostFragment =
                 (NavHostFragment) getSupportFragmentManager()
                         .findFragmentById(R.id.fragmentContainerView_store);

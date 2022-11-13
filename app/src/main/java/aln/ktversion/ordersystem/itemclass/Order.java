@@ -1,9 +1,10 @@
 package aln.ktversion.ordersystem.itemclass;
 
 import java.io.PipedReader;
+import java.io.Serializable;
 import java.util.List;
 
-public class Order {
+public class Order implements Serializable {
     public static final Integer
             STATUS_BUILD = 1, STATUS_WORKING = 2, STATUS_PRODUCT_FINISH = 3,
             STATUS_WAIT_PAY = 4, STATUS_END = 5, STATUS_CANCEL = 6;

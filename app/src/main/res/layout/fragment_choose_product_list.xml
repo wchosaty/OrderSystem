@@ -1,14 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ChooseProductListFragment">
+    tools:context=".customer.ChooseProductListFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:orientation="vertical"
+        android:layout_margin="1dp">
+
+        <TextView
+            android:id="@+id/tvTitle_ChooseProduct"
+            style="@style/myText"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="@string/title_chooseproduct"
+            android:textSize="40sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout_ChooseProduct"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.1"
+                android:layout_margin="1dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView_ChooseProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            <LinearLayout
+                android:id="@+id/LinearLayout_Market"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+                android:orientation="horizontal"
+                android:layout_margin="2dp">
+                <androidx.cardview.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.1"
+                    app:cardCornerRadius="50dp"
+                    app:cardElevation="6dp"
+                    >
+                    <ImageButton
+                        android:id="@+id/ibMarket_chooseProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="2dp"
+                        android:background="@color/white"
+                        android:src="@drawable/baseline_local_grocery_store_black_36" />
+                </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/tvTotalPrice_ChooseProduct"
+                    style="@style/myText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.9"
+                    android:textSize="30sp"
+                    android:text="@string/priceInitial"
+                    android:gravity="left"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="20dp"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
