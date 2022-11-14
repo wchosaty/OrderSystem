@@ -24,4 +24,6 @@
     <string name="countInitial">1</string>
     <string name="sure">確認</string>
     <string name="send">送出</string>
+    <string name="orderid">單號:</string>
+    <string name="orderisEmpty">沒有訂單</string>
 </resources>

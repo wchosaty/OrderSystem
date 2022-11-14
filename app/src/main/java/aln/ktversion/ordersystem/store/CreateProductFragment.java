@@ -69,7 +69,7 @@ public class CreateProductFragment extends Fragment {
                     && checkInput(waitTimeString) && checkInput(selectGroup)) {
                 double price = Double.valueOf(priceString);
                 Integer waitTime = Integer.valueOf(waitTimeString);
-                Product product = new Product(false,name,price,waitTime,0,0,null,selectGroup);
+                Product product = new Product(false,name,"",price,waitTime,0,0,null,selectGroup);
 
                 String data = new Gson().toJson(product);
 //                String url = RemoteAccess.URL+"MyProductServlet";

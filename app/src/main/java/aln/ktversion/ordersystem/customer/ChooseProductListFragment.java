@@ -45,10 +45,11 @@ public class ChooseProductListFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button btSend;
-    private ImageButton ibMarket;
+    private ImageButton ibMarket,ibToChooseList;
     private TextView tvTotalPrice;
     private List<Product> productList, chooseProducts;
     private SharedPreferences pre;
+    private Boolean savePreFlag = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,9 +106,13 @@ public class ChooseProductListFragment extends Fragment {
             }
 
         });
-
         ibMarket.setOnClickListener(v -> {
 
+        });
+
+        // CustomerOrderList
+        ibToChooseList.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.action_chooseProductListFragment_to_customerOrderListFragment);
         });
     }
 
@@ -136,14 +141,17 @@ public class ChooseProductListFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        String gsonString = new Gson().toJson(chooseProducts);
-        LogHistory.d(TAG,"onStop String :"+ gsonString);
-        pre.edit().putString(Common.ALL_PRODUCT,gsonString).apply();
+            String gsonString = new Gson().toJson(chooseProducts);
+            LogHistory.d(TAG, "onStop String :" + gsonString);
+            pre.edit().putString(Common.ALL_PRODUCT, gsonString).apply();
+            chooseProducts = null;
     }
 
     private void addChooseProducts() {
         Bundle bundle = getArguments();
+        setArguments(null);
         if(bundle == null){
+            LogHistory.d(TAG,"addChooseProducts bundle: null");
             return;
         }
         Integer count = bundle.getInt("count");
@@ -152,8 +160,10 @@ public class ChooseProductListFragment extends Fragment {
         Product product = new Gson().fromJson(productString,Product.class);
         if(Objects.equals(chooseProducts,null)){
             LogHistory.d(TAG,"chooseProducts : null");
+//            chooseProducts = new ArrayList<>();
         }
-        if(count != null && count > 0 && !Objects.equals(null,product)){
+        if(!Objects.equals(null,count) && count > 0 && !Objects.equals(null,product)){
+            LogHistory.d(TAG,"chooseProducts : add");
             for(int i=1;i<=count;i++){
                 chooseProducts.add(product);
             }
@@ -200,6 +210,7 @@ public class ChooseProductListFragment extends Fragment {
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView_ChooseProduct);
         ibMarket = view.findViewById(R.id.ibMarket_chooseProduct);
+        ibToChooseList = view.findViewById(R.id.ibToCHoseList_ChooseProduct);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_ChooseProduct);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_ChooseProduct);
         btSend = view.findViewById(R.id.btSend_SingleProduct);

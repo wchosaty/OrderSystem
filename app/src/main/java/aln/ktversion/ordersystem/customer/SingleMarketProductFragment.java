@@ -93,6 +93,7 @@ public class SingleMarketProductFragment extends Fragment {
 
     private Product initial() {
         Bundle bundle = getArguments();
+        setArguments(null);
         Product p = (Product) bundle.getSerializable(Common.INSERT_PRODUCT);
         LogHistory.d(TAG,"name :"+p.getName()+" price :"+p.getPrice()+" waitTime :"+p.getWaitTime());
         count = 1;

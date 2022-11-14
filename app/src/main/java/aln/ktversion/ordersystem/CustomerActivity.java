@@ -19,8 +19,11 @@ public class CustomerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer);
 
-        SharedPreferences pre = this.getSharedPreferences("preference", MODE_PRIVATE);
-        customerName = pre.getString("user","");
+        SharedPreferences preference = this.getSharedPreferences("preference", MODE_PRIVATE);
+        customerName = preference.getString("user","");
+        SharedPreferences pre = this.getSharedPreferences("chooseProducts", MODE_PRIVATE);
+        pre.edit().remove(Common.ALL_PRODUCT).apply();
     }
+
 
 }

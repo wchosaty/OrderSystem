@@ -6,6 +6,13 @@ public class Common {
     public static final String SUCCESS = "success";
 
     public static final String
+            ALL_ID = "all id",
+            INSERT_ID = "insert id",
+            UPDATE_ID = "update id",
+            DELETE_ID = "delete id",
+            QUERY_ID = "query id";
+
+    public static final String
             ALL_PRODUCT = "all product",
             INSERT_PRODUCT = "insert product",
             BATCH_INSERT_PRODUCT = "batch insert product",

@@ -5,14 +5,16 @@ import java.io.Serializable;
 public class Product implements Serializable {
 
     private Boolean titleFlag;
-    private String name;
+    private String name,status;
     private double price;
     private Integer waitTime,count,topThree,id;
     private String kind;
 
-    public Product(Boolean titleFlag, String name, double price, Integer waitTime, Integer count, Integer topThree, Integer id, String kind) {
+    public Product(Boolean titleFlag, String name, String status, double price, Integer waitTime,
+                   Integer count, Integer topThree, Integer id, String kind) {
         this.titleFlag = titleFlag;
         this.name = name;
+        this.status = status;
         this.price = price;
         this.waitTime = waitTime;
         this.count = count;
@@ -35,6 +37,14 @@ public class Product implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public double getPrice() {

@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_chooseProductListFragment_to_singleMarketProductFragment"
             app:destination="@id/singleMarketProductFragment" />
+        <action
+            android:id="@+id/action_chooseProductListFragment_to_customerOrderListFragment"
+            app:destination="@id/customerOrderListFragment" />
     </fragment>
     <fragment
         android:id="@+id/singleMarketProductFragment"
@@ -20,6 +23,15 @@
         tools:layout="@layout/fragment_single_market_product" >
         <action
             android:id="@+id/action_singleMarketProductFragment_to_chooseProductListFragment"
+            app:destination="@id/chooseProductListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerOrderListFragment"
+        android:name="aln.ktversion.ordersystem.customer.CustomerOrderListFragment"
+        android:label="fragment_customer_order_list"
+        tools:layout="@layout/fragment_customer_order_list" >
+        <action
+            android:id="@+id/action_customerOrderListFragment_to_chooseProductListFragment"
             app:destination="@id/chooseProductListFragment" />
     </fragment>
 </navigation>
