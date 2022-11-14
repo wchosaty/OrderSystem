@@ -2,6 +2,8 @@ package aln.ktversion.ordersystem.network;
 
 import android.util.Log;
 
+import com.google.gson.JsonObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -57,7 +59,7 @@ public class ConnectString implements Callable<String> {
                 httpConnection.disconnect();
             }
         }
-        LogHistory.d(TAG,"backString :"+stringBuilder.toString());
+//        LogHistory.d(TAG,"backString :"+stringBuilder.toString());
         return stringBuilder.toString();
     }
 

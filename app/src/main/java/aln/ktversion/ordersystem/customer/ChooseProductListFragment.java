@@ -1,5 +1,7 @@
 package aln.ktversion.ordersystem.customer;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.icu.text.PluralRules;
 import android.os.Bundle;
 
@@ -11,9 +13,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +29,9 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
+import aln.ktversion.ordersystem.CustomerActivity;
 import aln.ktversion.ordersystem.R;
 import aln.ktversion.ordersystem.itemclass.Order;
 import aln.ktversion.ordersystem.itemclass.Product;
@@ -38,10 +44,11 @@ public class ChooseProductListFragment extends Fragment {
     private static final String TAG = "TAG ChooseProductListFragment";
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private Button btSend;
     private ImageButton ibMarket;
     private TextView tvTotalPrice;
-    private List<Product> productList;
-    private Order order;
+    private List<Product> productList, chooseProducts;
+    private SharedPreferences pre;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +66,7 @@ public class ChooseProductListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initial();
+        handleButton();
 
         swipeRefreshLayout.setOnRefreshListener(() -> {
                     swipeRefreshLayout.setRefreshing(true);
@@ -66,13 +74,71 @@ public class ChooseProductListFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 }
         );
+
     }
+
+    private void handleButton() {
+        // 送出訂單
+        btSend.setOnClickListener(v -> {
+            if(Objects.equals(chooseProducts,null) || chooseProducts.isEmpty() ) {
+                return;
+            }
+            String url = RemoteAccess.URL + "MyProductServlet";
+            String data = new Gson().toJson(chooseProducts);
+
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action",Common.BATCH_INSERT_ORDER);
+            jsonObject.addProperty("data",data);
+
+            if(!Objects.equals(null, CustomerActivity.customerName) && !Objects.equals("",CustomerActivity.customerName)){
+                jsonObject.addProperty("customerName",CustomerActivity.customerName);
+            }
+
+            String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
+            LogHistory.d(TAG,"back :"+backString);
+
+            if(!Objects.equals(null,backString) && !Objects.equals("",backString)){
+                SharedPreferences pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
+                pre.edit().remove(Common.ALL_PRODUCT).apply();
+                chooseProducts = new ArrayList<>();
+                calculateTotalPriceShow(chooseProducts,tvTotalPrice);
+            }
+
+        });
+
+        ibMarket.setOnClickListener(v -> {
+
+        });
+    }
+
 
     private void initial() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         productList = getProductList();
         showProductList();
+
+        pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
+        String preString = pre.getString(Common.ALL_PRODUCT,null);
+        if(preString != null){
+            LogHistory.d(TAG,"Pre chooseProducts :"+preString);
+            Type type = new TypeToken<List<Product>>() {}.getType();
+            chooseProducts = new Gson().fromJson(preString,type);
+            if(chooseProducts == null){
+                LogHistory.d(TAG,"Pre chooseProducts : new");
+                chooseProducts = new ArrayList<>();
+            }else{
+                calculateTotalPriceShow(chooseProducts,tvTotalPrice);
+            }
+        }
         addChooseProducts();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        String gsonString = new Gson().toJson(chooseProducts);
+        LogHistory.d(TAG,"onStop String :"+ gsonString);
+        pre.edit().putString(Common.ALL_PRODUCT,gsonString).apply();
     }
 
     private void addChooseProducts() {
@@ -80,16 +146,32 @@ public class ChooseProductListFragment extends Fragment {
         if(bundle == null){
             return;
         }
-        String backString = bundle.getString(Common.ALL_PRODUCT);
-        Type type = new TypeToken<List<Product>>() {}.getType();
-        List<Product> list = new Gson().fromJson(backString,type);
-        if(list != null){
-//            tvTotalPrice.setText("size :"+list.size()+" name :"+list.get(0).getName()+" price :"+ list.get(0).getPrice());
+        Integer count = bundle.getInt("count");
+        LogHistory.d(TAG,"count:"+count);
+        String productString = bundle.getString(Common.INSERT_PRODUCT);
+        Product product = new Gson().fromJson(productString,Product.class);
+        if(Objects.equals(chooseProducts,null)){
+            LogHistory.d(TAG,"chooseProducts : null");
+        }
+        if(count != null && count > 0 && !Objects.equals(null,product)){
+            for(int i=1;i<=count;i++){
+                chooseProducts.add(product);
+            }
+
+            calculateTotalPriceShow(chooseProducts,tvTotalPrice);
         }
     }
 
+    private void calculateTotalPriceShow(List<Product> chooseProducts, TextView textView) {
+        double totalPay = 0;
+        for(Product p : chooseProducts){
+            totalPay += p.getPrice();
+        }
+        textView.setText(getString(R.string.priceSymbol)+ totalPay );
+    }
+
     private void showProductList() {
-        if(productList.isEmpty() || productList == null) {
+        if(Objects.equals(productList,null) || productList.isEmpty() ) {
             Toast.makeText(requireContext(), R.string.productisEmpty, Toast.LENGTH_SHORT).show();
             return;
         }
@@ -109,7 +191,7 @@ public class ChooseProductListFragment extends Fragment {
         jsonObject.addProperty("data",Common.ALL_PRODUCT);
 
         String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
-        LogHistory.d(TAG,"back :"+backString);
+//        LogHistory.d(TAG,"back :"+backString);
         Type type = new TypeToken<List<Product>>() {}.getType();
 
         return new Gson().fromJson(backString,type);
@@ -120,6 +202,7 @@ public class ChooseProductListFragment extends Fragment {
         ibMarket = view.findViewById(R.id.ibMarket_chooseProduct);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_ChooseProduct);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_ChooseProduct);
+        btSend = view.findViewById(R.id.btSend_SingleProduct);
     }
 
     private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{

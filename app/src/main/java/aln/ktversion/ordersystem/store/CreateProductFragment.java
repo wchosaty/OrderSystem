@@ -71,13 +71,13 @@ public class CreateProductFragment extends Fragment {
                 Integer waitTime = Integer.valueOf(waitTimeString);
                 Product product = new Product(false,name,price,waitTime,0,0,null,selectGroup);
 
-                String gsonString = new Gson().toJson(product);
+                String data = new Gson().toJson(product);
 //                String url = RemoteAccess.URL+"MyProductServlet";
                 String url = RemoteAccess.URL+"MyProductServlet_Maintenance";
 
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("action", Common.INSERT_PRODUCT);
-                jsonObject.addProperty("data",gsonString);
+                jsonObject.addProperty("data",data);
 
                 String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
                 LogHistory.d(TAG,"back :"+backString);

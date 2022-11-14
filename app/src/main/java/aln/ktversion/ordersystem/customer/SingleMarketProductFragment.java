@@ -1,5 +1,6 @@
 package aln.ktversion.ordersystem.customer;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,9 +33,10 @@ public class SingleMarketProductFragment extends Fragment {
     private Button btSure;
     private TextView tvName,tvPrice,tvWaitTime,tvTotalPrice;
     private EditText etCount;
-    private List<Product> chooseProducts;
+//    private List<Product> chooseProducts;
     private Product product;
-    private double total;
+    private double totalPrice;
+    private Integer count;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,33 +59,32 @@ public class SingleMarketProductFragment extends Fragment {
 
     private void handleButton() {
         ibSub.setOnClickListener(v -> {
-            if(chooseProducts == null || product == null ){
-                return;
-            }
-            if(chooseProducts.size() >= 1){
-                chooseProducts.remove(0);
-                etCount.setText(String.valueOf(chooseProducts.size()));
-                total = product.getPrice() * chooseProducts.size();
-                tvTotalPrice.setText(String.valueOf(total));
+            if(count >= 1){
+                count--;
+                etCount.setText(count.toString());
+                totalPrice = product.getPrice() * count;
+                tvTotalPrice.setText(String.valueOf(totalPrice));
             }
         });
         ibAdd.setOnClickListener(v -> {
-            if(chooseProducts == null || product == null ){
+            if(count<0){
                 return;
             }
             if(product != null){
-                chooseProducts.add(product);
-                etCount.setText(String.valueOf(chooseProducts.size()));
-                total = product.getPrice() * chooseProducts.size();
-                tvTotalPrice.setText(String.valueOf(total));
+                count++;
+                etCount.setText(count.toString());
+                totalPrice = product.getPrice() * count;
+                tvTotalPrice.setText(String.valueOf(totalPrice));
             }
         });
         btSure.setOnClickListener(v -> {
-            if(chooseProducts!=null && chooseProducts.size()>=1 && product != null){
+            if( count >= 0 && product != null){
                 Bundle bundle = new Bundle();
-                String gsonString = new Gson().toJson(chooseProducts);
-                LogHistory.d(TAG,"single String :"+gsonString);
-                bundle.putString(Common.ALL_PRODUCT, gsonString );
+                bundle.putInt("count",count);
+                String productString = new Gson().toJson(product);
+                LogHistory.d(TAG,"Bundle productString :"+productString);
+                bundle.putString(Common.INSERT_PRODUCT,productString);
+                LogHistory.d(TAG,"Bundle count:"+count);
                 Navigation.findNavController(v)
                         .navigate(R.id.action_singleMarketProductFragment_to_chooseProductListFragment,bundle);
             }
@@ -94,14 +95,12 @@ public class SingleMarketProductFragment extends Fragment {
         Bundle bundle = getArguments();
         Product p = (Product) bundle.getSerializable(Common.INSERT_PRODUCT);
         LogHistory.d(TAG,"name :"+p.getName()+" price :"+p.getPrice()+" waitTime :"+p.getWaitTime());
-        chooseProducts = new ArrayList<>();
+        count = 1;
         tvName.setText(p.getName());
         tvPrice.setText(getString(R.string.priceSymbol)+String.valueOf(p.getPrice()));
         tvWaitTime.setText("約"+String.valueOf(p.getWaitTime())+ getString(R.string.minute) );
-
-        chooseProducts.add(p);
-        total = p.getPrice() * chooseProducts.size();
-        tvTotalPrice.setText(String.valueOf(total));
+        totalPrice = p.getPrice() * count;
+        tvTotalPrice.setText(String.valueOf(totalPrice));
         return p;
     }
 
