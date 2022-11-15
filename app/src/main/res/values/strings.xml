@@ -28,4 +28,8 @@
     <string name="orderisEmpty">沒有訂單</string>
     <string name="customerOrderList">訂單查詢</string>
     <string name="createTitle">商品編輯</string>
+    <string name="productFinish">出餐完成</string>
+    <string name="productPreReady">準備中</string>
+    <string name="cancel">取消</string>
+    <string name="productEnd">結單</string>
 </resources>
