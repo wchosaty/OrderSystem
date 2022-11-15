@@ -7,7 +7,5 @@
     <item
         android:id="@+id/productListFragment"
         android:title="@string/product" />
-    <item
-        android:id="@+id/historyFragment"
-        android:title="@string/query" />
+
 </menu>

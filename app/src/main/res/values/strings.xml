@@ -26,4 +26,6 @@
     <string name="send">送出</string>
     <string name="orderid">單號:</string>
     <string name="orderisEmpty">沒有訂單</string>
+    <string name="customerOrderList">訂單查詢</string>
+    <string name="createTitle">商品編輯</string>
 </resources>

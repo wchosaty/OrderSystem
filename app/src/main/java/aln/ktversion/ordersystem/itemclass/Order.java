@@ -7,6 +7,7 @@ import java.util.List;
 public class Order implements Serializable {
     public static final String STATUS_BUILD = "訂單成立", STATUS_WORKING = "準備中", STATUS_PRODUCT_FINISH = "出餐完成",
             STATUS_WAIT_PAY = "未付款", STATUS_END = "結單", STATUS_CANCEL = "取消";
+    private Integer id;
     private String customerName;
     private List<Product> list;
     private Date startTime, EndTime;
@@ -18,9 +19,10 @@ public class Order implements Serializable {
     public Order() {
     }
 
-    public Order(String customerName, List<Product> list, Date startTime, Date endTime, Long order_id, String status,
+    public Order(String customerName,Integer id,List<Product> list, Date startTime, Date endTime, Long order_id, String status,
                  double totalPay, Boolean titleFlag) {
         super();
+        this.id = id;
         this.customerName = customerName;
         this.list = list;
         this.startTime = startTime;
@@ -31,7 +33,13 @@ public class Order implements Serializable {
         this.titleFlag = titleFlag;
     }
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getCustomerName() {
         return customerName;
