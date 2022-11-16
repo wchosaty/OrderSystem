@@ -83,6 +83,20 @@ public class OrderListFragment extends Fragment {
         }
     }
 
+    private void showItemOrder() {
+        if(Objects.equals(itemOrder,null)){
+            LogHistory.d(TAG,"itemOrder : null");
+            return;
+        }
+        OrderAdapter orderAdapter = (OrderAdapter) recyclerView_order.getAdapter();
+        if(orderAdapter == null){
+            recyclerView_order.setAdapter(new OrderAdapter(itemOrder,itemOrder.getList()));
+        }else{
+            orderAdapter.setList(itemOrder,itemOrder.getList());
+            orderAdapter.notifyDataSetChanged();
+        }
+    }
+
     private List<OrderId> getOrderIdList() {
         JsonObject jsonObject = new JsonObject();
         String url = RemoteAccess.URL+"MyProductServlet";
@@ -93,6 +107,19 @@ public class OrderListFragment extends Fragment {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         Type type = new TypeToken<List<OrderId>>() {}.getType();
         return gson.fromJson(backString,type);
+    }
+
+    private Order getSingleOrder(Long orderId) {
+        JsonObject jsonObject = new JsonObject();
+        String url = RemoteAccess.URL+"MyProductServlet";
+        //findId
+        jsonObject.addProperty("action",Common.QUERY_ORDER);
+        jsonObject.addProperty("data",Common.QUERY_ORDER);
+        jsonObject.addProperty("orderId",orderId);
+
+        String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
+        LogHistory.d(TAG,"back :"+backString);
+        return gsonDate.fromJson(backString,Order.class);
     }
 
     private void findViews(View view) {
@@ -194,9 +221,18 @@ public class OrderListFragment extends Fragment {
                  popupMenuId.show();
                  return true;
              });
+
+             holder.itemView.setOnClickListener(v -> {
+                 itemOrder = null;
+                 itemOrder = getSingleOrder(orderId.getOrder_id());
+                 LogHistory.d(TAG,"orderList size :"+itemOrder.getList().size());
+                 showItemOrder();
+             });
          }
 
-         class IdViewHolder extends RecyclerView.ViewHolder{
+
+
+        class IdViewHolder extends RecyclerView.ViewHolder{
             TextView tvOrderId,tvCustomerName,tvTime,tvStatus;
 
             public IdViewHolder(@NonNull View itemView) {
@@ -239,6 +275,7 @@ public class OrderListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(@NonNull OrderViewHolder holder, int position) {
+            String  url = RemoteAccess.URL+"MyProductServlet";
             Product product = list.get(position);
 
             if(!product.getTitleFlag()){
@@ -247,18 +284,61 @@ public class OrderListFragment extends Fragment {
                 holder.tvTime.setVisibility(View.GONE);
                 holder.tvName.setVisibility(View.VISIBLE);
                 holder.tvStatus.setVisibility(View.VISIBLE);
-                holder.tvName.setText(order.getCustomerName()+":"+order.getOrder_id());
-                holder.tvTime.setText(sdf.format(order.getStartTime()));
+                holder.tvName.setText(product.getName());
+                holder.tvStatus.setText(product.getStatus());
             }else{
                 // Title
                 holder.tvItemNameId.setVisibility(View.VISIBLE);
                 holder.tvTime.setVisibility(View.VISIBLE);
                 holder.tvName.setVisibility(View.GONE);
                 holder.tvStatus.setVisibility(View.GONE);
-                holder.tvName.setText(product.getName());
-                holder.tvStatus.setText(product.getStatus());
-
+                holder.tvItemNameId.setText(order.getCustomerName()+":"+order.getOrder_id());
+                holder.tvTime.setText(sdf.format(order.getStartTime()));
             }
+
+            holder.itemView.setOnLongClickListener(v -> {
+                PopupMenu popupMenuOrder = new PopupMenu(requireContext(), v, Gravity.END);
+                popupMenuOrder.inflate(R.menu.popup_item_menu);
+                popupMenuOrder.setOnMenuItemClickListener(item -> {
+                    int itemId = item.getItemId();
+                    JsonObject j = new JsonObject();
+                    switch (itemId) {
+                        case R.id.finish_item:
+                            j.addProperty("action",Common.UPDATE_ORDER);
+                            product.setStatus(Common.STATUS_PRODUCT_FINISH);
+                            j.addProperty("data", gsonDate.toJson(product));
+                            String backfinish = RemoteAccess.accessProduct(url,j.toString());
+
+                            itemOrder = getSingleOrder(order.getOrder_id());
+                            showItemOrder();
+                            Toast.makeText(requireContext(), "finish", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.cancel_item:
+                            j.addProperty("action",Common.UPDATE_ORDER);
+                            product.setStatus(Common.STATUS_CANCEL);
+                            j.addProperty("data", gsonDate.toJson(product));
+                            String backcancel = RemoteAccess.accessProduct(url,j.toString());
+
+                            itemOrder = getSingleOrder(order.getOrder_id());
+                            showItemOrder();
+                            Toast.makeText(requireContext(), "cancel", Toast.LENGTH_SHORT).show();
+                            break;
+                        case R.id.preReady_item:
+                            j.addProperty("action",Common.UPDATE_ORDER);
+                            product.setStatus(Common.STATUS_PREREADY);
+                            j.addProperty("data", gsonDate.toJson(product));
+                            String backpreReady = RemoteAccess.accessProduct(url,j.toString());
+
+                            itemOrder = getSingleOrder(order.getOrder_id());
+                            showItemOrder();
+                            Toast.makeText(requireContext(), "preReady", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                    return true;
+                });
+                popupMenuOrder.show();
+                return true;
+            });
         }
 
         class OrderViewHolder extends RecyclerView.ViewHolder{

@@ -23,6 +23,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,6 +42,7 @@ public class CustomerOrderListFragment extends Fragment {
     private TextView tvTitleOrderInf;
     private Order itemOrder;
     private List<OrderId> orderIdList;
+    private Gson gsonDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +67,11 @@ public class CustomerOrderListFragment extends Fragment {
         swipeRefreshLayout_id.setOnRefreshListener(()->{
             orderIdList = getOrderIdList();
             showOrderIdList();
+            if(recyclerView_order.getAdapter() != null){
+                itemOrder.setList(new ArrayList<Product>());
+                showItemOrder();
+
+            }
             swipeRefreshLayout_id.setRefreshing(false);
         });
         swipeRefreshLayout_order.setOnRefreshListener(()->{
@@ -73,6 +80,7 @@ public class CustomerOrderListFragment extends Fragment {
     }
 
     private void initial() {
+        gsonDate = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         recyclerView_id.setLayoutManager(new LinearLayoutManager(requireContext()));
         recyclerView_order.setLayoutManager(new LinearLayoutManager(requireContext()));
         orderIdList = getOrderIdList();
@@ -129,7 +137,8 @@ public class CustomerOrderListFragment extends Fragment {
 
         String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
         LogHistory.d(TAG,"back :"+backString);
-        return new Gson().fromJson(backString,Order.class);
+        return gsonDate.fromJson(backString,Order.class);
+//        return new Gson().fromJson(backString,Order.class);
     }
 
     private Order getAllOrder() {
