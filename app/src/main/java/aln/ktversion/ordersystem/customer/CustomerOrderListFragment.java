@@ -58,6 +58,18 @@ public class CustomerOrderListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         findViews(view);
         initial();
+        handleRefresh();
+    }
+
+    private void handleRefresh() {
+        swipeRefreshLayout_id.setOnRefreshListener(()->{
+            orderIdList = getOrderIdList();
+            showOrderIdList();
+            swipeRefreshLayout_id.setRefreshing(false);
+        });
+        swipeRefreshLayout_order.setOnRefreshListener(()->{
+            swipeRefreshLayout_order.setRefreshing(false);
+        });
     }
 
     private void initial() {
@@ -250,7 +262,7 @@ public class CustomerOrderListFragment extends Fragment {
 
 
         class IdViewHolder extends RecyclerView.ViewHolder {
-            private TextView tvOrderId,tvStatus,tvTime;
+            TextView tvOrderId,tvStatus,tvTime;
 
             public IdViewHolder(@NonNull View itemView) {
                 super(itemView);

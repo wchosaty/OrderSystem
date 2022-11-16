@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:background="@color/material_dynamic_primary95"
         android:layout_margin="1dp"
         >
 
@@ -27,9 +28,9 @@
             android:id="@+id/swipeRefreshLayout_OrderId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="1dp"
+            android:layout_margin="5dp"
+            android:background="@color/white"
             android:layout_weight="0.5"
-            android:background="@color/lightGrey"
             >
 
             <androidx.recyclerview.widget.RecyclerView
@@ -42,8 +43,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:layout_margin="1dp"
-            android:background="@color/material_dynamic_neutral95"
+            android:layout_margin="5dp"
+            android:background="@color/white"
             >
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView_CustomerOrder"
