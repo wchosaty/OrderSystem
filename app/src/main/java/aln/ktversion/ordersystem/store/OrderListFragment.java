@@ -197,6 +197,9 @@ public class OrderListFragment extends Fragment {
                                 j.addProperty("action",Common.UPDATE_ID);
                                 orderId.setStatus(Common.STATUS_END);
                                 j.addProperty("data",gsonDate.toJson(orderId));
+                                // 測試順便更新order detail
+//                                j.addProperty("data2",Common.UPDATE_FINDID_ORDER);
+
                                 String backend = RemoteAccess.accessProduct(url,j.toString());
                                 orderIdList = getOrderIdList();
                                 showOrderIdList();

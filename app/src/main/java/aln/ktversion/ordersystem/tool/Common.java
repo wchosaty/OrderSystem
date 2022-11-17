@@ -28,7 +28,8 @@ public class Common {
             BATCH_INSERT_ORDER = "batch insert order",
             UPDATE_ORDER = "update order",
             DELETE_ORDER = "delete order",
-            QUERY_ORDER = "query order";
+            QUERY_ORDER = "query order",
+            UPDATE_FINDID_ORDER = "upsate findid order";
 
     public static final String
             ALL_GROUP = "all group",
