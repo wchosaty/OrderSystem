@@ -67,9 +67,19 @@ public class DialogActivity extends AppCompatActivity {
             }
             String dialogString = new Gson().toJson(products);
             LogHistory.d(TAG,dialogString);
-            pre.edit().putString("diaList",dialogString).apply();
 
-            startActivity(new Intent(this, CustomerActivity.class));
+            // A startActivity方式
+//            pre.edit().putString("diaList",dialogString).apply();
+//            startActivity(new Intent(this, CustomerActivity.class));
+
+            // B Activity Result
+            // 要將Intent物件放在setResult()內方能回傳
+//            Intent intent = getIntent();
+            Intent intent = new Intent();
+            intent.putExtra("list",dialogString);
+            setResult(RESULT_OK,intent);
+            finish();
+
         });
     }
 

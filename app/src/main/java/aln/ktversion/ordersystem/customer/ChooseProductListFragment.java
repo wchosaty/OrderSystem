@@ -3,9 +3,11 @@ package aln.ktversion.ordersystem.customer;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.PluralRules;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -15,7 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,16 +33,16 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import static android.app.Activity.RESULT_OK;
 
 import aln.ktversion.ordersystem.CustomerActivity;
 import aln.ktversion.ordersystem.DialogActivity;
 import aln.ktversion.ordersystem.R;
-import aln.ktversion.ordersystem.itemclass.Order;
 import aln.ktversion.ordersystem.itemclass.Product;
 import aln.ktversion.ordersystem.network.RemoteAccess;
-import aln.ktversion.ordersystem.store.ProductListFragment;
 import aln.ktversion.ordersystem.tool.Common;
 import aln.ktversion.ordersystem.tool.LogHistory;
+
 
 public class ChooseProductListFragment extends Fragment {
     private static final String TAG = "TAG ChooseProductListFragment";
@@ -54,6 +55,10 @@ public class ChooseProductListFragment extends Fragment {
     private SharedPreferences pre;
     private Boolean savePreFlag = false,drawerOpen = false;
     private DrawerLayout drawerLayout;
+
+    ActivityResultLauncher<Intent> marketLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),this::marketResult);
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,8 @@ public class ChooseProductListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         LogHistory.d(TAG,"onViewCreated");
         findViews(view);
+        pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
+
         initial();
         handleButton();
 
@@ -130,7 +137,12 @@ public class ChooseProductListFragment extends Fragment {
               bundle.putString("total",String.valueOf(tvTotalPrice.getText()));
               Intent intent = new Intent(requireContext(), DialogActivity.class);
               intent.putExtras(bundle);
-                startActivity(intent);
+
+                // A startActivity方式
+//                startActivity(intent);
+
+                // B launcher方式
+              marketLauncher.launch(intent);
           });
 
 //        ibMarketOpen.setOnClickListener(v -> {
@@ -142,27 +154,40 @@ public class ChooseProductListFragment extends Fragment {
 //        });
     }
 
+    private void marketResult(ActivityResult activityResult) {
+
+        if(activityResult.getResultCode() == RESULT_OK ){
+            String s = activityResult.getData().getExtras().getString("list");
+            if(!Objects.equals(null,s ) ) {
+                chooseProducts = new Gson().fromJson(s,new TypeToken<List<Product>>() {}.getType());
+            }
+            calculateTotalPriceShow(chooseProducts,tvTotalPrice);
+        }
+    }
 
     private void initial() {
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         productList = getProductList();
         showProductList();
 
-        pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
-        String diaString = pre.getString("diaList",null);
-        if (diaString != null) {
-            LogHistory.d(TAG, "Pre chooseProducts Dialog:" + diaString);
-            Type type = new TypeToken<List<Product>>() {
-            }.getType();
-            chooseProducts = new Gson().fromJson(diaString, type);
-            if (chooseProducts == null) {
-                LogHistory.d(TAG, "Pre chooseProducts Dialog: new");
-                chooseProducts = new ArrayList<>();
-            } else {
-                calculateTotalPriceShow(chooseProducts, tvTotalPrice);
-            }
-            pre.edit().remove(Common.ALL_PRODUCT).remove("diaList").apply();
-        }else{
+//        pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
+
+        // A startActivity方式
+//        String diaString = pre.getString("diaList",null);
+//        if (diaString != null) {
+//            LogHistory.d(TAG, "Pre chooseProducts Dialog:" + diaString);
+//            Type type = new TypeToken<List<Product>>() {
+//            }.getType();
+//            chooseProducts = new Gson().fromJson(diaString, type);
+//            if (chooseProducts == null) {
+//                LogHistory.d(TAG, "Pre chooseProducts Dialog: new");
+//                chooseProducts = new ArrayList<>();
+//            } else {
+//                calculateTotalPriceShow(chooseProducts, tvTotalPrice);
+//            }
+//            pre.edit().remove(Common.ALL_PRODUCT).remove("diaList").apply();
+//        }
+//A        else{
             String preString = pre.getString(Common.ALL_PRODUCT,null);
             if(preString != null){
                 LogHistory.d(TAG,"Pre chooseProducts :"+preString);
@@ -175,7 +200,8 @@ public class ChooseProductListFragment extends Fragment {
                     calculateTotalPriceShow(chooseProducts,tvTotalPrice);
                 }
             }
-        }
+
+//A        }
 
         addChooseProducts();
     }
