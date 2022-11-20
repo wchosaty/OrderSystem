@@ -1,12 +1,14 @@
 package aln.ktversion.ordersystem.customer;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.icu.text.PluralRules;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Objects;
 
 import aln.ktversion.ordersystem.CustomerActivity;
+import aln.ktversion.ordersystem.DialogActivity;
 import aln.ktversion.ordersystem.R;
 import aln.ktversion.ordersystem.itemclass.Order;
 import aln.ktversion.ordersystem.itemclass.Product;
@@ -45,11 +48,12 @@ public class ChooseProductListFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Button btSend;
-    private ImageButton ibMarket,ibToChooseList;
+    private ImageButton ibMarketOpen,ibMarketClose,ibToChooseList;
     private TextView tvTotalPrice;
     private List<Product> productList, chooseProducts;
     private SharedPreferences pre;
-    private Boolean savePreFlag = false;
+    private Boolean savePreFlag = false,drawerOpen = false;
+    private DrawerLayout drawerLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,6 +69,7 @@ public class ChooseProductListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LogHistory.d(TAG,"onViewCreated");
         findViews(view);
         initial();
         handleButton();
@@ -75,8 +80,13 @@ public class ChooseProductListFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 }
         );
-
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
 
     private void handleButton() {
         // 送出訂單
@@ -106,14 +116,30 @@ public class ChooseProductListFragment extends Fragment {
             }
 
         });
-        ibMarket.setOnClickListener(v -> {
-
-        });
 
         // CustomerOrderList
         ibToChooseList.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.action_chooseProductListFragment_to_customerOrderListFragment);
         });
+          ibMarketOpen.setOnClickListener(v -> {
+              if(Objects.equals(null,chooseProducts) || Objects.equals(0,chooseProducts)){
+                  return;
+              }
+              Bundle bundle = new Bundle();
+              bundle.putString("list",new Gson().toJson(chooseProducts));
+              bundle.putString("total",String.valueOf(tvTotalPrice.getText()));
+              Intent intent = new Intent(requireContext(), DialogActivity.class);
+              intent.putExtras(bundle);
+                startActivity(intent);
+          });
+
+//        ibMarketOpen.setOnClickListener(v -> {
+//            Toast.makeText(requireContext(), "drawer:"+drawerOpen, Toast.LENGTH_SHORT).show();
+//                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_OPEN);
+//        });
+//        ibMarketClose.setOnClickListener(v -> {
+//            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+//        });
     }
 
 
@@ -123,18 +149,34 @@ public class ChooseProductListFragment extends Fragment {
         showProductList();
 
         pre = requireContext().getSharedPreferences("chooseProducts", Context.MODE_PRIVATE);
-        String preString = pre.getString(Common.ALL_PRODUCT,null);
-        if(preString != null){
-            LogHistory.d(TAG,"Pre chooseProducts :"+preString);
-            Type type = new TypeToken<List<Product>>() {}.getType();
-            chooseProducts = new Gson().fromJson(preString,type);
-            if(chooseProducts == null){
-                LogHistory.d(TAG,"Pre chooseProducts : new");
+        String diaString = pre.getString("diaList",null);
+        if (diaString != null) {
+            LogHistory.d(TAG, "Pre chooseProducts Dialog:" + diaString);
+            Type type = new TypeToken<List<Product>>() {
+            }.getType();
+            chooseProducts = new Gson().fromJson(diaString, type);
+            if (chooseProducts == null) {
+                LogHistory.d(TAG, "Pre chooseProducts Dialog: new");
                 chooseProducts = new ArrayList<>();
-            }else{
-                calculateTotalPriceShow(chooseProducts,tvTotalPrice);
+            } else {
+                calculateTotalPriceShow(chooseProducts, tvTotalPrice);
+            }
+            pre.edit().remove(Common.ALL_PRODUCT).remove("diaList").apply();
+        }else{
+            String preString = pre.getString(Common.ALL_PRODUCT,null);
+            if(preString != null){
+                LogHistory.d(TAG,"Pre chooseProducts :"+preString);
+                Type type = new TypeToken<List<Product>>() {}.getType();
+                chooseProducts = new Gson().fromJson(preString,type);
+                if(chooseProducts == null){
+                    LogHistory.d(TAG,"Pre chooseProducts : new");
+                    chooseProducts = new ArrayList<>();
+                }else{
+                    calculateTotalPriceShow(chooseProducts,tvTotalPrice);
+                }
             }
         }
+
         addChooseProducts();
     }
 
@@ -209,11 +251,14 @@ public class ChooseProductListFragment extends Fragment {
 
     private void findViews(View view) {
         recyclerView = view.findViewById(R.id.recyclerView_ChooseProduct);
-        ibMarket = view.findViewById(R.id.ibMarket_chooseProduct);
+        ibMarketOpen = view.findViewById(R.id.ibMarket_chooseProduct);
+        ibMarketClose = view.findViewById(R.id.ibMarket_Market);
         ibToChooseList = view.findViewById(R.id.ibToCHoseList_ChooseProduct);
         tvTotalPrice = view.findViewById(R.id.tvTotalPrice_ChooseProduct);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout_ChooseProduct);
         btSend = view.findViewById(R.id.btSend_SingleProduct);
+
+//        drawerLayout = view.findViewById(R.id.drawerLayout);
     }
 
     private class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder>{

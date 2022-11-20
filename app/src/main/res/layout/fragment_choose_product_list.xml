@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".customer.ChooseProductListFragment">
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="1dp">
+        android:layout_margin="1dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tvTitle_ChooseProduct"
@@ -19,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/title_chooseproduct"
-            android:textSize="40sp"/>
+            android:textSize="40sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +32,8 @@
                 android:id="@+id/swipeRefreshLayout_ChooseProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
-                android:layout_margin="1dp">
+                android:layout_margin="1dp"
+                android:layout_weight="0.1">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recyclerView_ChooseProduct"
@@ -40,29 +41,29 @@
                     android:layout_height="match_parent" />
 
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
             <LinearLayout
                 android:id="@+id/LinearLayout_Market"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="2dp"
                 android:layout_weight="0.9"
-                android:orientation="horizontal"
-                android:layout_margin="2dp">
+                android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
                     android:layout_marginLeft="2dp"
+                    android:layout_weight="0.1"
                     app:cardCornerRadius="50dp"
-                    app:cardElevation="6dp"
-                    >
+                    app:cardElevation="6dp">
 
                     <ImageButton
                         android:id="@+id/ibToCHoseList_ChooseProduct"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight="0.1"
                         android:layout_margin="2dp"
+                        android:layout_weight="0.1"
                         android:background="@color/white"
                         android:src="@drawable/baseline_list_alt_black_36" />
                 </androidx.cardview.widget.CardView>
@@ -70,11 +71,10 @@
                 <androidx.cardview.widget.CardView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
                     android:layout_marginLeft="3dp"
+                    android:layout_weight="0.1"
                     app:cardCornerRadius="50dp"
-                    app:cardElevation="6dp"
-                    >
+                    app:cardElevation="6dp">
 
                     <ImageButton
                         android:id="@+id/ibMarket_chooseProduct"
@@ -84,27 +84,27 @@
                         android:background="@color/white"
                         android:src="@drawable/baseline_local_grocery_store_black_36" />
                 </androidx.cardview.widget.CardView>
+
                 <TextView
                     android:id="@+id/tvTotalPrice_ChooseProduct"
                     style="@style/myText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.9"
-                    android:textSize="30sp"
-                    android:text="@string/priceInitial"
-                    android:gravity="left"
-                    android:layout_marginTop="5dp"
                     android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="0.9"
+                    android:gravity="left"
                     android:paddingLeft="10dp"
-                    />
+                    android:text="@string/priceInitial"
+                    android:textSize="30sp" />
 
                 <Button
                     android:id="@+id/btSend_SingleProduct"
                     style="@style/myButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.1"
                     android:layout_margin="5dp"
+                    android:layout_weight="0.1"
                     android:text="@string/send"
                     android:textColor="@color/white"
 
@@ -114,8 +114,25 @@
 
         </LinearLayout>
 
-
-
     </LinearLayout>
+    <com.google.android.material.navigation.NavigationView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_gravity="end"
+        android:background="@color/black">
+        <ImageButton
+            android:id="@+id/ibMarket_Market"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="2dp"
+            android:background="@color/white"
+            android:src="@drawable/baseline_local_grocery_store_black_36" />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Test123456789"
+            android:textSize="50dp" />
+    </com.google.android.material.navigation.NavigationView>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
