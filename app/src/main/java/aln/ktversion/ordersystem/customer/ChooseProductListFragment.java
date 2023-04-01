@@ -56,7 +56,8 @@ public class ChooseProductListFragment extends Fragment {
     private Boolean savePreFlag = false,drawerOpen = false;
     private DrawerLayout drawerLayout;
 
-    ActivityResultLauncher<Intent> marketLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),this::marketResult);
+    ActivityResultLauncher<Intent> marketLauncher =
+            registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),this::marketResult);
 
 
 

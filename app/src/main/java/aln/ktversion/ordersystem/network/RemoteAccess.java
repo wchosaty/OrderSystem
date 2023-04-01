@@ -6,7 +6,8 @@ import java.util.concurrent.FutureTask;
 public class RemoteAccess {
     private static final String TAG = "TAG RemoteAccess";
     // localhost url
-    public static final String URL = "http://10.0.2.2:8080/OrderSystemWeb/";
+//    public static final String URL = "http://10.0.2.2:8080/OrderSystemWeb/";
+    public static final String URL = "http://192.168.204.138:8080/OrderSystemWeb/";
 
     public static String accessProduct(String url,String outString){
         ConnectString connectString = new ConnectString(url,outString);

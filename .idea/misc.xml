@@ -3,16 +3,16 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_customer.xml" value="0.23125" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_customer.xml" value="0.1" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_dialog.xml" value="0.23697916666666666" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_main.xml" value="0.2" />
-        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_store.xml" value="0.2" />
-        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_choose_product_list.xml" value="0.176" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/activity_store.xml" value="0.18055555555555555" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_choose_product_list.xml" value="0.264" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_create_product.xml" value="0.2" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_customer_order_list.xml" value="0.2" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_history.xml" value="0.23697916666666666" />
-        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_order_list.xml" value="0.14553990610328638" />
-        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_product_list.xml" value="0.1" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_order_list.xml" value="0.176" />
+        <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_product_list.xml" value="0.264" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/fragment_single_market_product.xml" value="0.23697916666666666" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/item_customer_order.xml" value="0.16" />
         <entry key="..\:/Users/hosat/AndroidStudioProjects/OrderSystem/app/src/main/res/layout/item_market.xml" value="0.264" />

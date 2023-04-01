@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +39,7 @@ public class ProductListFragment extends Fragment {
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private List<Product> productList;
+    private Button btTest;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,15 @@ public class ProductListFragment extends Fragment {
                     swipeRefreshLayout.setRefreshing(false);
                 }
         );
+        view.findViewById(R.id.btTest).setOnClickListener(v -> {
+            String url = RemoteAccess.URL+"MyProductServlet";
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("action","test");
+            jsonObject.addProperty("data","test");
+            String backString = RemoteAccess.accessProduct(url,jsonObject.toString());
+        });
     }
+
 
     private void showProductList() {
         if(productList.isEmpty() || productList == null) {
